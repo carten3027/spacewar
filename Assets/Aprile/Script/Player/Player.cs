@@ -135,6 +135,15 @@ public class Player : MonoBehaviour
         {
             UseBomb();
         }
+
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            UseSkill(0);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            UseSkill(1);
+        }
     }
 
     private void HandleMovement()
@@ -340,6 +349,21 @@ public class Player : MonoBehaviour
         {
             if (flashRoutine != null) StopCoroutine(flashRoutine);
             flashRoutine = StartCoroutine(FlashRoutine());
+        }
+    }
+
+    private void UseSkill(int slotIndex)
+    {
+        if (DataManager.Instance == null) return;
+
+        PartType skill = DataManager.Instance.quickSlots[slotIndex];
+        if (skill == PartType.None) return;
+
+        // 플레이어에 부착된 Item 컴포넌트를 찾아 실제 스킬 발동 위임
+        Item item = GetComponent<Item>();
+        if (item != null)
+        {
+            item.ExecuteSkill(skill);
         }
     }
 

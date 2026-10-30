@@ -28,6 +28,10 @@ public class ExplosionSettings
 [RequireComponent(typeof(Rigidbody2D))]
 public class EnemyBullet : MonoBehaviour
 {
+    // === 추가된 부분: 스킬 제어 상태 플래그 ===
+    public bool isOverriddenBySkill = false;
+    // =====================================
+
     private const float ArmTime = 0.3f;
 
     [Header("이 프리팹은 탄의 그림·충돌만 담당. 속도 등은 쏘는 적(Enemy·Boss)에서 설정")]
@@ -69,7 +73,9 @@ public class EnemyBullet : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (exploding) return;
+        // === 추가된 부분: 스킬에 의해 제어 중이거나 폭발 중이면 기본 이동 중지 ===
+        if (exploding || isOverriddenBySkill) return;
+        // ==========================================================
 
         age += Time.fixedDeltaTime;
 
