@@ -72,11 +72,13 @@ public class FieldItem : MonoBehaviour
                         // 아이템 종류가 Heal(회복)이면 플레이어 체력 회복!
                         if (itemType == DropItemType.Heal)
                         {
+                            SoundManager.Play(SoundManager.Sfx.ItemPickup); // [추가] 아이템 획득 소리!
                             player.Heal(Mathf.RoundToInt(effectValue));
                         }
                         // 아이템 종류가 Invincible(무적)이면 플레이어 무적 발동!
                         else if (itemType == DropItemType.Invincible)
                         {
+                            SoundManager.Play(SoundManager.Sfx.BagFull);
                             player.ActivateInvincibleItem(effectValue);
                         }
                     }

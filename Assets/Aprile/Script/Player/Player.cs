@@ -266,6 +266,8 @@ public class Player : MonoBehaviour
         if (isDead || IsInvincible) return;
 
         currentHp = Mathf.Max(0, currentHp - damage);
+
+        SoundManager.Play(SoundManager.Sfx.Hit); // [추가] 플레이어 피격 효과음!
         Debug.Log($"피격! HP: {currentHp}/{maxHp}");
 
         if (currentHp <= 0)
@@ -336,6 +338,7 @@ public class Player : MonoBehaviour
     private void UseBomb()
     {
         bombCount--;
+        SoundManager.Play(SoundManager.Sfx.Bomb);
 
         foreach (GameObject bullet in GameObject.FindGameObjectsWithTag(enemyBulletTag))
         {

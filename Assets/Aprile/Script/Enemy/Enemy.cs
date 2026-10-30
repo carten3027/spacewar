@@ -242,6 +242,8 @@ public class Enemy : MonoBehaviour
 
     void Shoot(EnemyBullet prefab, float angle, bool homing, float life = 0f, ExplosionSettings blast = null)
     {
+
+        SoundManager.Play(SoundManager.Sfx.Shoot); // [추가] 미사일 발사 효과음!
         if (prefab == null) return;
 
         EnemyBullet shot = Instantiate(prefab, rb.position, Quaternion.Euler(0f, 0f, angle));
@@ -274,6 +276,7 @@ public class Enemy : MonoBehaviour
         if (dead) return;
 
         hp -= amount;
+        SoundManager.Play(SoundManager.Sfx.Hit);
         Debug.Log($"{name} HP {Mathf.Max(hp, 0)}/{maxHp}");
 
         if (hp <= 0)

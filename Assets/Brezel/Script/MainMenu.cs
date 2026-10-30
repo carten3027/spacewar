@@ -66,6 +66,8 @@ public class MainMenu : MonoBehaviour
         if (started) return;
         started = true;
 
+        SoundManager.Play(SoundManager.Sfx.Click); // [추가] 시작 버튼 클릭 효과음!
+
         startButton.interactable = false;
         if (menuGroup != null) menuGroup.alpha = 0f;
 
