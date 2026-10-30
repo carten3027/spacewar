@@ -99,7 +99,7 @@ MonoBehaviour:
   explosion:
     radius: 1.2
     duration: 0.35
-    prefab: {fileID: 0}
+    prefab: {fileID: 9056364419108637597, guid: 208bb22eb0d94d541a9efbda6a3f0283, type: 3}
   score: 100
   money: 10
   returnSpeed: 6
