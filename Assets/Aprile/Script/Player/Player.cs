@@ -314,10 +314,14 @@ public class Player : MonoBehaviour
             DataManager.Instance.currentScore = stageStartScore;
         }
 
-        Debug.Log("플레이어 사망");
+        Debug.Log("플레이어 사망 - 선택창 호출");
         onDeath.Invoke();
 
-        if (restartOnDeath)
+        if (GameSystemExtension.Instance != null)
+        {
+            GameSystemExtension.Instance.OpenDeathMenu();
+        }
+        else if (restartOnDeath)
         {
             Invoke(nameof(Restart), restartDelay);
         }

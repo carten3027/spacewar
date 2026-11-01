@@ -87,19 +87,15 @@ public class DataManager : MonoBehaviour
     // -------------------------------------------------------------------------------------
     private void Awake()
     {
-        // 싱글톤 검사 로직
-        if (Instance == null) // 1. 내가 최초로 생성된 DataManager라면
+        if (Instance == null)
         {
-            Instance = this; // 정적 변수에 자기 자신을 등록
-
-            // DontDestroyOnLoad: 씬(Scene)이 변경되어도 이 게임 오브젝트를 파괴하지 않고 유지함
+            Instance = this;
             DontDestroyOnLoad(gameObject);
-
-            LoadRankings(); // 게임 시작 시 랭킹 데이터를 로드
+            LoadRankings();
         }
-        else // 2. 이미 기존에 등록된 DataManager가 존재한다면 (씬 이동 후 중복 생성 시)
+        else if (Instance != this)
         {
-            Destroy(gameObject); // 나중에 생성된 자신(중복 객체)을 삭제하여 오직 1개만 유지
+            Destroy(this); // gameObject 전체를 폭파하지 않고 중복 컴포넌트만 제거!
         }
     }
 

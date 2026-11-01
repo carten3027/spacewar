@@ -69,8 +69,10 @@ public class StageManager : MonoBehaviour
         }
     }
 
+    // [StageManager.cs 의 Start() 함수를 아래 코드로 교체]
     private IEnumerator Start()
     {
+        Time.timeScale = 1f; // 일시정지 상태에서 넘어왔을 경우를 대비해 시간 정상화
         cam = Camera.main;
         if (messageText != null) messageText.text = "";
 
@@ -82,7 +84,7 @@ public class StageManager : MonoBehaviour
         while (index < stages.Length)
         {
             StageIndex = index;
-            if (DataManager.Instance != null) DataManager.Instance.SaveGame();
+            // (기존에 있던 자동 SaveGame 호출을 제거하여 유저가 직접 저장할 때만 저장되게 함)
 
             yield return PlayStage(stages[index], index + 1);
             index++;
@@ -91,13 +93,13 @@ public class StageManager : MonoBehaviour
             {
                 StageIndex = index;
                 if (shop != null) yield return shop.OpenRoutine();
-                if (DataManager.Instance != null) DataManager.Instance.SaveGame();
             }
         }
 
         StageIndex = 0;
         yield return ShowMessage("VICTORY", endDelay);
 
+        // 3스테이지 최종 클리어 시 엔딩 시퀀스(세이브 삭제 + 랭킹 입력 + 엔딩 메시지) 실행
         if (GameSystemExtension.Instance != null)
         {
             GameSystemExtension.Instance.StartVictorySequence();

@@ -59,6 +59,23 @@ public class SoundManager : MonoBehaviour
     private AudioSource sfxSource; // 효과음 전용 스피커
     private AudioSource bgmSource; // 배경음악 전용 스피커
 
+    // [SoundManager.cs 에 추가할 실시간 볼륨 조절 프로퍼티]
+    public float BgmVolume
+    {
+        get => bgmVolume;
+        set
+        {
+            bgmVolume = Mathf.Clamp01(value);
+            if (bgmSource != null) bgmSource.volume = bgmVolume;
+        }
+    }
+
+    public float SfxVolume
+    {
+        get => masterVolume;
+        set => masterVolume = Mathf.Clamp01(value);
+    }
+
     void Awake()
     {
         // 이미 SoundManager가 존재한다면 중복 실행 방지

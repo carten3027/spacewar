@@ -125,7 +125,7 @@ public class InventoryAndItem : MonoBehaviour
         }
         if (string.IsNullOrEmpty(itemNames)) itemNames = "비어 있음";
 
-        string bagInfo = $"■ 배낭(가방) : {bag.Count}/{maxItemCount}개 ({CurrentWeight:F1}/{maxWeightLimit:F1}kg)\n" +
+        string bagInfo = $"[배낭 상태] : {bag.Count}/{maxItemCount}개 ({CurrentWeight:F1}/{maxWeightLimit:F1}kg)\n" +
                          $"- 보유: {itemNames}";
 
         // 좌측 하단 구석에 작고 깔끔하게 표시하여 기존 상단 HUD와 절대 안 겹치게 배치
