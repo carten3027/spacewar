@@ -86,6 +86,13 @@ public class StageManager : MonoBehaviour
 
             yield return PlayStage(stages[index], index + 1);
             index++;
+
+            if (index < stages.Length)
+            {
+                StageIndex = index;
+                if (shop != null) yield return shop.OpenRoutine();
+                if (DataManager.Instance != null) DataManager.Instance.SaveGame();
+            }
         }
 
         StageIndex = 0;
