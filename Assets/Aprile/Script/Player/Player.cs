@@ -84,6 +84,7 @@ public class Player : MonoBehaviour
     private Coroutine flashRoutine;
     private bool isMoving;
     private bool isDead;
+    private bool isDefenseUp; // 방어력 강화 아이템 상태 스위치
     private float turnVelocity;
     private Vector2 bounceVelocity;
     private float bounceTimer;
@@ -228,16 +229,34 @@ public class Player : MonoBehaviour
         TakeDamage(damagePerHit);
     }
 
+    // ---------------- [아이템 효과 함수 3종 (중복 제거 완료)] ----------------
+    // 1. 생명력 회복 아이템 효과 (기획서 11-③: 습득과 동시에 생명치 증가)
     public void Heal(int amount)
     {
         currentHp = Mathf.Min(maxHp, currentHp + amount);
-        Debug.Log($"[아이템] 체력 회복! 현재 HP: {currentHp}/{maxHp}");
+        Debug.Log($"[아이템] 생명력 +{amount} 회복! 현재 HP: {currentHp}/{maxHp}");
     }
 
+    // 2. 일정 시간 무적 아이템 효과 (기획서 9-②)
     public void ActivateInvincibleItem(float duration)
     {
-        MakeInvincible(duration, false);
-        Debug.Log($"[아이템] 무적 효과 발동! ({duration}초)");
+        MakeInvincible(duration, true);
+        Debug.Log($"[아이템] {duration}초 동안 무적 효과 발동!");
+    }
+
+    // 3. 일정 시간 방어력 강화 아이템 효과 (기획서 9-②)
+    public void ActivateDefenseUpItem(float duration)
+    {
+        StartCoroutine(DefenseUpRoutine(duration));
+    }
+
+    private IEnumerator DefenseUpRoutine(float duration)
+    {
+        isDefenseUp = true;
+        Debug.Log($"[아이템] {duration}초 동안 방어력 강화 시작!");
+        yield return new WaitForSeconds(duration);
+        isDefenseUp = false;
+        Debug.Log("[아이템] 방어력 강화 종료!");
     }
 
     public void Bounce(Vector2 dir, float distance, float duration)
@@ -265,9 +284,11 @@ public class Player : MonoBehaviour
     {
         if (isDead || IsInvincible) return;
 
-        currentHp = Mathf.Max(0, currentHp - damage);
+        // 방어력 강화 중이면 데미지를 절반(최소 1)으로 감소
+        int finalDamage = isDefenseUp ? Mathf.Max(1, damage / 2) : damage;
+        currentHp = Mathf.Max(0, currentHp - finalDamage);
 
-        SoundManager.Play(SoundManager.Sfx.Hit); // [추가] 플레이어 피격 효과음!
+        SoundManager.Play(SoundManager.Sfx.Hit);
         Debug.Log($"피격! HP: {currentHp}/{maxHp}");
 
         if (currentHp <= 0)
@@ -362,7 +383,6 @@ public class Player : MonoBehaviour
         PartType skill = DataManager.Instance.quickSlots[slotIndex];
         if (skill == PartType.None) return;
 
-        // 플레이어에 부착된 Item 컴포넌트를 찾아 실제 스킬 발동 위임
         Item item = GetComponent<Item>();
         if (item != null)
         {

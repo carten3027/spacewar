@@ -70,6 +70,12 @@ public class Enemy : MonoBehaviour
     [SerializeField] private int score = 100;
     [SerializeField] private int money = 10;
 
+    [Header("아이템 드랍 설정")]
+    [SerializeField] private GameObject[] normalItemPrefabs; // 일반 아이템 3종 (회복, 무적, 방어력)
+    [SerializeField] private GameObject rareItemPrefab;      // 고급 아이템 1종
+    [SerializeField, Range(0f, 1f)] private float normalDropChance = 0.35f; // 일반 아이템 드랍 확률 (35%)
+    [SerializeField, Range(0f, 1f)] private float rareDropChance = 0.10f;   // 고급 아이템 드랍 확률 (10%)
+
     [Header("화면 밖으로 밀려났을 때")]
     [SerializeField] private float returnSpeed = 6f;
 
@@ -291,11 +297,23 @@ public class Enemy : MonoBehaviour
         dead = true;
 
         KillCount++;
-        StageMoney += money;
 
         if (DataManager.Instance != null)
         {
             DataManager.Instance.currentScore += score;
+            DataManager.Instance.money += money;
+        }
+
+        // [아이템 드랍 로직] 1순위: 고급 아이템 확률 검사 -> 2순위: 일반 아이템 확률 검사
+        float roll = Random.value; // 0.0 ~ 1.0 사이의 랜덤 숫자 뽑기
+        if (rareItemPrefab != null && roll <= rareDropChance)
+        {
+            Instantiate(rareItemPrefab, transform.position, Quaternion.identity);
+        }
+        else if (normalItemPrefabs != null && normalItemPrefabs.Length > 0 && roll <= rareDropChance + normalDropChance)
+        {
+            int idx = Random.Range(0, normalItemPrefabs.Length);
+            Instantiate(normalItemPrefabs[idx], transform.position, Quaternion.identity);
         }
 
         Destroy(gameObject);

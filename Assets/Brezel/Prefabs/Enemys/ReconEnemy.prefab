@@ -102,6 +102,13 @@ MonoBehaviour:
     prefab: {fileID: 0}
   score: 100
   money: 10
+  normalItemPrefabs:
+  - {fileID: 2283822134483812795, guid: d4934a7ab1bc0ea468502a82ff7020e2, type: 3}
+  - {fileID: 1060633833855807050, guid: c9710490be8f1754a8efca2edaf96d96, type: 3}
+  - {fileID: 8123598530607213682, guid: fbfbedf9df88c864a9d38d8ed17719c7, type: 3}
+  rareItemPrefab: {fileID: 2038935709578798119, guid: eb6a8e3d61e96a84cb9f7cdac18cd909, type: 3}
+  normalDropChance: 0.35
+  rareDropChance: 0.1
   returnSpeed: 6
   playerTag: Player
 --- !u!58 &6563769106416430719

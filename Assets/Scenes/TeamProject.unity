@@ -3759,6 +3759,7 @@ GameObject:
   - component: {fileID: 1709930079}
   - component: {fileID: 1709930078}
   - component: {fileID: 1709930081}
+  - component: {fileID: 1709930083}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -3781,6 +3782,7 @@ MonoBehaviour:
   maxItemCount: 5
   maxWeightLimit: 10
   bag: []
+  showBagUI: 1
 --- !u!114 &1709930079
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3862,6 +3864,23 @@ MonoBehaviour:
     clip: {fileID: 0}
     volume: 1
   masterVolume: 1
+--- !u!114 &1709930083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1709930077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26d33724a8cfc1345887ea6a29887a35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  obstaclePrefab: {fileID: 1963712669095468057, guid: b25ca41cc29e56c4d904f744625512dd, type: 3}
+  maxObstacles: 3
+  obstacleSpawnInterval: 4
+  enableDarkVision: 1
+  visionSize: 7
 --- !u!1 &1756796179
 GameObject:
   m_ObjectHideFlags: 0

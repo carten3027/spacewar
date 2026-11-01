@@ -82,19 +82,23 @@ public class StageManager : MonoBehaviour
         while (index < stages.Length)
         {
             StageIndex = index;
+            if (DataManager.Instance != null) DataManager.Instance.SaveGame();
+
             yield return PlayStage(stages[index], index + 1);
             index++;
-
-            if (index < stages.Length)
-            {
-                StageIndex = index;
-                if (shop != null) yield return shop.OpenRoutine();
-                if (DataManager.Instance != null) DataManager.Instance.SaveGame();
-            }
         }
 
         StageIndex = 0;
         yield return ShowMessage("VICTORY", endDelay);
+
+        if (GameSystemExtension.Instance != null)
+        {
+            GameSystemExtension.Instance.StartVictorySequence();
+            while (!GameSystemExtension.Instance.IsEndingProcessDone)
+            {
+                yield return null;
+            }
+        }
 
         if (!string.IsNullOrEmpty(endSceneName))
         {

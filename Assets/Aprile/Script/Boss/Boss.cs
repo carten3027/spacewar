@@ -343,18 +343,25 @@ public class Boss : MonoBehaviour
         return Mathf.Atan2(d.y, d.x) * Mathf.Rad2Deg - 90f;
     }
 
+    // [Boss.cs 의 OnTriggerStay2D 함수를 아래 코드로 교체]
     void OnTriggerStay2D(Collider2D other)
     {
-        if (dead || !entered || ramTimer > 0f) return;
+        if (dead || !entered) return;
 
         Player player = other.GetComponentInParent<Player>();
         if (player == null || player.IsDead) return;
 
-        ramTimer = ramCooldown;
-
+        // 1. 플레이어가 보스 몸을 통과하지 못하도록 쿨타임과 상관없이 항상 바깥으로 튕겨냄!
         Vector2 away = (Vector2)player.transform.position - rb.position;
+        if (away.sqrMagnitude < 0.001f) away = Vector2.down; // 완전히 겹쳤을 때 예외 방지
         player.Bounce(away, bounceDistance, bounceDuration);
-        TakeDamage(ramDamage);
+
+        // 2. 보스 체력을 깎는 데미지만 쿨타임(ramTimer)마다 1번씩 들어가도록 분리!
+        if (ramTimer <= 0f)
+        {
+            ramTimer = ramCooldown;
+            TakeDamage(ramDamage);
+        }
     }
 
     public void TakeDamage(int amount)
